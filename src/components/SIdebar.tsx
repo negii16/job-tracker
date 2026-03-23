@@ -5,17 +5,17 @@ import {
   BarChart3,
   X,
 } from "lucide-react";
-
+import { Link } from "react-router-dom";
 type SidebarProps = {
   sidebarOpen: boolean;
   setSidebarOpen: (open: boolean) => void;
 };
 
 const navItems = [
-  { name: "Dashboard", icon: LayoutDashboard },
-  { name: "Applications", icon: Briefcase },
-  { name: "Interviews", icon: CalendarCheck },
-  { name: "Analytics", icon: BarChart3 },
+  { name: "Dashboard", icon: LayoutDashboard, path: "/" },
+  { name: "Applications", icon: Briefcase, path: "/applications" },
+  { name: "Interviews", icon: CalendarCheck, path: "/interviews" },
+  { name: "Analytics", icon: BarChart3, path: "/analytics" },
 ];
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
@@ -26,7 +26,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
     >
       {/* Close Button */}
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-xl font-semibold tracking-tight">  JobTracker</h1>
+        <h1 className="text-xl font-semibold tracking-tight"> JobTracker</h1>
 
         <button onClick={() => setSidebarOpen(false)}>
           <X size={22} />
@@ -39,20 +39,20 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
           const Icon = item.icon;
 
           return (
-            <button
+            <Link
               key={index}
+              to={item.path}
+              onClick={() => setSidebarOpen(false)}
               className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition-all duration-200 text-slate-300 hover:text-white"
             >
               <Icon size={20} />
               <span className="text-sm font-medium">{item.name}</span>
-            </button>
+            </Link>
           );
         })}
       </nav>
 
-      <div className="mt-auto text-xs text-slate-400">
-        © 2026 JobTracker
-      </div>
+      <div className="mt-auto text-xs text-slate-400">© 2026 JobTracker</div>
     </aside>
   );
 }
