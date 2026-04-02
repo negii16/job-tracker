@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 type Job = {
+  id: string;
   company: string;
   position: string;
   status: string;
@@ -17,11 +18,11 @@ export default function AddJob() {
     e.preventDefault();
 
     const newJob: Job = {
+      id: crypto.randomUUID(),
       company,
       position,
       status,
     };
-
     const existingJobs = JSON.parse(localStorage.getItem("jobs") || "[]");
 
     const updatedJobs = [...existingJobs, newJob];
