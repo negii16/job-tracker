@@ -4,6 +4,7 @@ import Applications from "./pages/Applications";
 import DashboardLayout from "./layouts/DashboardLayout";
 import AddJob from "./pages/AddJob";
 import Interviews from "./pages/Interviews";
+
 function App() {
   return (
     <BrowserRouter>
