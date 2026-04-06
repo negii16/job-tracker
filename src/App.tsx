@@ -4,7 +4,7 @@ import Applications from "./pages/Applications";
 import DashboardLayout from "./layouts/DashboardLayout";
 import AddJob from "./pages/AddJob";
 import Interviews from "./pages/Interviews";
-
+import Offers from "./pages/Offers";
 function App() {
   return (
     <BrowserRouter>
@@ -13,7 +13,8 @@ function App() {
           <Route index element={<Dashboard />} />
           <Route path="applications" element={<Applications />} />
           <Route path="/add-job" element={<AddJob />} />
-          <Route path='interviews' element={<Interviews/>} />
+          <Route path="interviews" element={<Interviews />} />
+          <Route path="offers" element={<Offers />} />
         </Route>
       </Routes>
     </BrowserRouter>

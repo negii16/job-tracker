@@ -2,8 +2,30 @@ import { Briefcase, Send, Calendar, CheckCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { useSearch } from "@/hooks/useSearch";
+import { Job } from "@/types/job";
+import { useState } from "react";
 
 export default function Dashboard() {
+  const { searchTerm } = useSearch();
+  const savedJobs = JSON.parse(localStorage.getItem("jobs") || "[]");
+  const filteredJobs = savedJobs.filter(
+    (job: Job) =>
+      job.position.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      job.company.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
+  const recentJobs = filteredJobs.slice(0, 3);
+  const [jobs] = useState<Job[]>(() => {
+    return JSON.parse(localStorage.getItem("jobs") || "[]");
+  });
+  const totalJobs = jobs.length;
+
+  const appliedJobs = jobs.filter((job) => job.status === "Applied").length;
+
+  const interviewJobs = jobs.filter((job) => job.status === "Interview").length;
+
+  const offerJobs = jobs.filter((job) => job.status === "Offer").length;
+
   return (
     <div className="p-6 space-y-6">
       {/* Page Title */}
@@ -21,46 +43,51 @@ export default function Dashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Total Jobs</CardTitle>
-            <Briefcase size={20} />
+            <Briefcase size={24} />
           </CardHeader>
 
           <CardContent>
-            <p className="text-2xl font-bold">24</p>
+            <p className="text-2xl font-bold">{totalJobs}</p>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Applications</CardTitle>
-            <Send size={20} />
-          </CardHeader>
+        <Link to="/applications">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>Applications</CardTitle>
+              <Send size={20} />
+            </CardHeader>
+            <CardContent>
+              <p className="text-2xl font-bold">{appliedJobs}</p>
+            </CardContent>
+          </Card>
+        </Link>
 
-          <CardContent>
-            <p className="text-2xl font-bold">18</p>
-          </CardContent>
-        </Card>
+        <Link to="/interviews">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>Interviews</CardTitle>
+              <Calendar size={20} />
+            </CardHeader>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Interviews</CardTitle>
-            <Calendar size={20} />
-          </CardHeader>
+            <CardContent>
+              <p className="text-2xl font-bold">{interviewJobs}</p>
+            </CardContent>
+          </Card>
+        </Link>
 
-          <CardContent>
-            <p className="text-2xl font-bold">4</p>
-          </CardContent>
-        </Card>
+        <Link to="/offers">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>Offers</CardTitle>
+              <CheckCircle size={20} />
+            </CardHeader>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Offers</CardTitle>
-            <CheckCircle size={20} />
-          </CardHeader>
-
-          <CardContent>
-            <p className="text-2xl font-bold">2</p>
-          </CardContent>
-        </Card>
+            <CardContent>
+              <p className="text-2xl font-bold">{offerJobs}</p>
+            </CardContent>
+          </Card>
+        </Link>
       </div>
 
       {/* Recent Applications */}
@@ -72,32 +99,16 @@ export default function Dashboard() {
 
         <CardContent>
           <div className="space-y-3">
-            <div className="flex justify-between border-b pb-2">
-              <div>
-                <p className="font-medium">Frontend Developer</p>
-                <p className="text-sm text-gray-500">Google</p>
+            {recentJobs.map((job: Job) => (
+              <div key={job.id} className="flex justify-between border-b pb-2">
+                <div>
+                  <p className="font-medium">{job.position}</p>
+                  <p className="text-sm text-gray-500">{job.company}</p>
+                </div>
+
+                <span className="text-sm text-blue-500">{job.status}</span>
               </div>
-
-              <span className="text-sm text-blue-500">Applied</span>
-            </div>
-
-            <div className="flex justify-between border-b pb-2">
-              <div>
-                <p className="font-medium">React Developer</p>
-                <p className="text-sm text-gray-500">Amazon</p>
-              </div>
-
-              <span className="text-sm text-yellow-500">Interview</span>
-            </div>
-
-            <div className="flex justify-between">
-              <div>
-                <p className="font-medium">UI Engineer</p>
-                <p className="text-sm text-gray-500">Microsoft</p>
-              </div>
-
-              <span className="text-sm text-green-500">Offer</span>
-            </div>
+            ))}
           </div>
         </CardContent>
       </Card>

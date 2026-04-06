@@ -1,19 +1,12 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
-type Job = {
-  id: string;
-  company: string;
-  position: string;
-  status: string;
-};
+import { Job, JobStatus } from "@/types/job";
 
 export default function AddJob() {
   const [company, setCompany] = useState("");
   const [position, setPosition] = useState("");
-  const [status, setStatus] = useState("Applied");
-
+  const [status, setStatus] = useState<JobStatus>("Applied");
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -54,12 +47,12 @@ export default function AddJob() {
         <select
           className="w-full border rounded-md p-2"
           value={status}
-          onChange={(e) => setStatus(e.target.value)}
+          onChange={(e) => setStatus(e.target.value as JobStatus)}
         >
-          <option>Applied</option>
-          <option>Interview</option>
-          <option>Offer</option>
-          <option>Rejected</option>
+          <option value="Applied">Applied</option>
+          <option value="Interview">Interview</option>
+          <option value="Offer">Offer</option>
+          <option value="Rejected">Rejected</option>s
         </select>
 
         <Button type="submit">Save Job</Button>

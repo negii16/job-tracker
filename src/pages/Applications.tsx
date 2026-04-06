@@ -1,13 +1,6 @@
 import { useState } from "react";
 import { useSearch } from "@/hooks/useSearch";
-
-type Job = {
-  id: string;
-  company: string;
-  position: string;
-  status: string;
-};
-
+import { Job, JobStatus } from "@/types/job";
 export default function Applications() {
   const { searchTerm } = useSearch();
 
@@ -24,7 +17,7 @@ export default function Applications() {
     localStorage.setItem("jobs", JSON.stringify(updatedJobs));
   };
   const STATUS_OPTIONS = ["Applied", "Interview", "Offer", "Rejected"];
-  const updateStatus = (id: string, newStatus: string) => {
+  const updateStatus = (id: string, newStatus: JobStatus) => {
     const updatedJobs = jobs.map((job) =>
       job.id === id ? { ...job, status: newStatus } : job,
     );
@@ -78,7 +71,9 @@ export default function Applications() {
             <div className="flex items-center gap-3">
               <select
                 value={job.status}
-                onChange={(e) => updateStatus(job.id, e.target.value)}
+                onChange={(e) =>
+                  updateStatus(job.id, e.target.value as JobStatus)
+                }
                 className="text-sm border rounded px-2 py-1"
               >
                 {STATUS_OPTIONS.map((status) => (

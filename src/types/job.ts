@@ -3,8 +3,8 @@ export type JobStatus = "Applied" | "Interview" | "Offer" | "Rejected";
 export interface Job {
   id: string;
   company: string;
-  role: string;
+  position: string;
   status: JobStatus;
-  appliedDate: string;
+  appliedDate?: string;
   notes?: string;
 }
